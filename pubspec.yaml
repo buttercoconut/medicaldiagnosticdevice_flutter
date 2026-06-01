@@ -1,0 +1,24 @@
+name: medical_diagnostic_device
+description: A Flutter app for medical diagnostic device data visualization.
+publish_to: 'none'
+version: 1.0.0+1
+environment:
+  sdk: ">=2.18.0 <3.0.0"
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.13.5
+  charts_flutter: ^0.12.0
+  provider: ^6.0.5
+  flutter_secure_storage: ^5.0.2
+  intl: ^0.18.0
+  json_annotation: ^4.8.1
+  flutter_localizations:
+    sdk: flutter
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.4.6
+  json_serializable: ^6.6.1
+flutter:
+  uses-material-design: true
