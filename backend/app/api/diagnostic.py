@@ -1,18 +1,24 @@
-"""FastAPI routers for diagnostic data."""
+"""API routes for diagnostic data."""
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
 from typing import List
+from datetime import datetime
 
-from ..models.diagnostic import DiagnosticDataCreate, DiagnosticDataRead
-from ..services.diagnostic_service import create_diagnostic, list_diagnostics
-from ..dependencies import get_db
+from app.models.diagnostic_data import DiagnosticData
+from app.services.diagnostic_service import DiagnosticService
 
-router = APIRouter(prefix="/diagnostics", tags=["diagnostics"])
+router = APIRouter()
 
-@router.post("/", response_model=DiagnosticDataRead, status_code=status.HTTP_201_CREATED)
-def api_create_diagnostic(data: DiagnosticDataCreate, db: Session = Depends(get_db)):
-    return create_diagnostic(db, data)
+# Dependency injection for service
+async def get_service() -> DiagnosticService:
+    return DiagnosticService()
 
-@router.get("/", response_model=List[DiagnosticDataRead])
-def api_list_diagnostics(db: Session = Depends(get_db)):
-    return list_diagnostics(db)
+@router.post("/", response_model=DiagnosticData)
+async def create_diagnostic(data: DiagnosticData, service: DiagnosticService = Depends(get_service)):
+    try:
+        return await service.create(data)
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
+
+@router.get("/", response_model=List[DiagnosticData])
+async def list_diagnostics(patient_id: str, start: datetime, end: datetime, service: DiagnosticService = Depends(get_service)):
+    return await service.list(patient_id, start, end)

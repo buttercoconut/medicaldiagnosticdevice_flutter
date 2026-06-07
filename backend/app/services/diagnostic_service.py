@@ -1,14 +1,19 @@
-"""Diagnostic service layer."""
-from sqlalchemy.orm import Session
-from ..models.diagnostic import DiagnosticDataCreate, DiagnosticDataRead
-from ..database import DiagnosticData
+"""Service layer for diagnostic data handling."""
+from typing import List
+from datetime import datetime
 
-def create_diagnostic(db: Session, data_in: DiagnosticDataCreate) -> DiagnosticDataRead:
-    db_data = DiagnosticData(**data_in.dict())
-    db.add(db_data)
-    db.commit()
-    db.refresh(db_data)
-    return DiagnosticDataRead.from_orm(db_data)
+from app.models.diagnostic_data import DiagnosticData
 
-def list_diagnostics(db: Session):
-    return db.query(DiagnosticData).all()
+# In a real implementation, this would interface with a database
+class DiagnosticService:
+    def __init__(self):
+        # Placeholder for DB connection
+        self._store: List[DiagnosticData] = []
+
+    async def create(self, data: DiagnosticData) -> DiagnosticData:
+        # Simulate persistence
+        self._store.append(data)
+        return data
+
+    async def list(self, patient_id: str, start: datetime, end: datetime) -> List[DiagnosticData]:
+        return [d for d in self._store if d.patient_id == patient_id and start <= d.timestamp <= end]

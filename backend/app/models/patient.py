@@ -1,18 +1,14 @@
-"""Patient Pydantic models."""
+"""Pydantic models for patient data."""
 from pydantic import BaseModel, Field
-from datetime import date
+from datetime import datetime
 
-class PatientBase(BaseModel):
+class Patient(BaseModel):
     patient_id: str = Field(..., description="Unique patient identifier")
-    name: str
-    birth_date: date
-    gender: str
-    phone: str | None = None
-    email: str | None = None
+    name: str = Field(..., description="Patient full name")
+    date_of_birth: datetime = Field(..., description="Date of birth")
+    gender: str = Field(..., description="Gender (M/F/Other)")
+    # Sensitive fields can be encrypted at rest
+    ssn: str = Field(..., description="Encrypted SSN")
 
-class PatientCreate(PatientBase):
-    pass
-
-class PatientRead(PatientBase):
     class Config:
         orm_mode = True

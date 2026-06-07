@@ -1,12 +1,12 @@
-# Dockerfile
-FROM python:3.11-slim
+# Dockerfile for FastAPI backend
+FROM python:3.12-slim
 
 WORKDIR /app
 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY ./app ./app
 
 EXPOSE 8000
 
