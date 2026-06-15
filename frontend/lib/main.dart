@@ -14,14 +14,12 @@ class MedicalDiagnosticApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<ApiService>(
-          create: (_) => ApiService(),
-        ),
+        Provider<ApiService>(create: (_) => ApiService()),
       ],
       child: MaterialApp(
         title: 'Medical Diagnostic Device',
         theme: ThemeData(
-          primarySwatch: Colors.teal,
+          primarySwatch: Colors.blue,
         ),
         home: const HomeScreen(),
       ),
